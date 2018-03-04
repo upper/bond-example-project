@@ -1,10 +1,15 @@
 package main
 
 import (
-	"github.com/go-chi/chi"
-	"github.com/upper/bond-example-project/service/web/routers"
 	"log"
+
 	"net/http"
+
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
+	"github.com/upper/bond-example-project/service/web/handlers/authors"
+	"github.com/upper/bond-example-project/service/web/handlers/books"
+	"github.com/upper/bond-example-project/service/web/handlers/subjects"
 )
 
 const listenAddr = ":1999"
@@ -12,9 +17,11 @@ const listenAddr = ":1999"
 func main() {
 	r := chi.NewRouter()
 
-	r.Mount("/authors", routers.NewAuthorsRouter())
-	r.Mount("/subjects", routers.NewSubjectsRouter())
-	r.Mount("/books", routers.NewBooksRouter())
+	r.Use(middleware.Logger)
+
+	r.Mount("/authors", authors.NewRouter())
+	r.Mount("/subjects", subjects.NewRouter())
+	r.Mount("/books", books.NewRouter())
 
 	log.Printf("Running server at %s", listenAddr)
 	log.Fatal("http.ListenAndServe", http.ListenAndServe(listenAddr, r))

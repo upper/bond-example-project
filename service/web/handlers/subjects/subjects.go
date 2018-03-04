@@ -1,13 +1,14 @@
-package routers
+package subjects
 
 import (
 	"context"
+	"net/http"
+
 	"github.com/go-chi/chi"
 	"github.com/upper/bond-example-project/app"
 	"github.com/upper/bond-example-project/model"
 	"github.com/upper/bond-example-project/repo"
 	"github.com/upper/bond-example-project/service/web/ws"
-	"net/http"
 
 	"upper.io/bond"
 	"upper.io/db.v3"
@@ -144,7 +145,7 @@ func deleteSubject(w http.ResponseWriter, r *http.Request) {
 	ws.Respond(w, 200, nil)
 }
 
-func NewSubjectsRouter() http.Handler {
+func NewRouter() http.Handler {
 	r := chi.NewRouter()
 
 	r.Get("/", listSubjects)

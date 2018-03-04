@@ -2,8 +2,9 @@ package tests
 
 import (
 	"fmt"
-	"github.com/upper/bond-example-project/repo"
 	"testing"
+
+	"github.com/upper/bond-example-project/repo"
 
 	"upper.io/bond"
 )
