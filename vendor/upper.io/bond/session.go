@@ -35,6 +35,9 @@ type SQLBackend interface {
 type Backend interface {
 	sqlbuilder.SQLBuilder
 	db.Database
+
+	SetTxOptions(sql.TxOptions)
+	TxOptions() *sql.TxOptions
 }
 
 type Session interface {
@@ -141,18 +144,28 @@ func (s *session) SessionTx(ctx context.Context, fn func(sess Session) error) er
 	return errors.New("Missing backend, forgot to use bond.New?")
 }
 
+func (s *session) getStore(item interface{}) Store {
+	if c, ok := item.(HasStore); ok {
+		return c.Store(s)
+	}
+	if c, ok := item.(HasCollectionName); ok {
+		return s.Store(c.CollectionName())
+	}
+	panic("reached")
+}
+
 func (s *session) Save(item Model) error {
 	if item == nil {
 		return ErrExpectingNonNilModel
 	}
-	return s.Store(item.CollectionName()).Save(item)
+	return s.getStore(item).Save(item)
 }
 
 func (s *session) Delete(item Model) error {
 	if item == nil {
 		return ErrExpectingNonNilModel
 	}
-	return s.Store(item.CollectionName()).Delete(item)
+	return s.getStore(item).Delete(item)
 }
 
 func (s *session) Store(item interface{}) Store {
@@ -161,8 +174,14 @@ func (s *session) Store(item interface{}) Store {
 	switch t := item.(type) {
 	case string:
 		colName = t
+	case func(sess Session) db.Collection:
+		colName = t(s).Name()
+	case Store:
+		return t
+	case db.Collection:
+		colName = t.Name()
 	case Model:
-		colName = t.CollectionName()
+		colName = t.Store(s).Name()
 	default:
 		itemv := reflect.ValueOf(item)
 		if itemv.Kind() == reflect.Ptr {
@@ -170,7 +189,7 @@ func (s *session) Store(item interface{}) Store {
 		}
 		item = itemv.Interface()
 		if m, ok := item.(Model); ok {
-			colName = m.CollectionName()
+			colName = m.Store(s).Name()
 		}
 	}
 

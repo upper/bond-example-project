@@ -2,7 +2,6 @@ package app
 
 import (
 	"github.com/upper/bond-example-project/model"
-	"github.com/upper/bond-example-project/repo"
 
 	"errors"
 
@@ -14,22 +13,22 @@ type Book struct {
 	*model.Book `json:"book"`
 }
 
-func (s *Book) Store(sess bond.Session) bond.Store {
-	return repo.Books(sess)
+func (b *Book) Store(sess bond.Session) bond.Store {
+	return Books(sess)
 }
 
 func NewBook(book *model.Book) *Book {
 	return &Book{book}
 }
 
-func (book *Book) Validate() error {
-	if book.AuthorID == 0 {
+func (b *Book) Validate() error {
+	if b.AuthorID == 0 {
 		return errors.New("Missing author")
 	}
-	if book.SubjectID == 0 {
+	if b.SubjectID == 0 {
 		return errors.New("Missing subject")
 	}
-	if book.Title == "" {
+	if b.Title == "" {
 		return errors.New("Missing title")
 	}
 	return nil
@@ -42,7 +41,7 @@ func (b *Book) BeforeCreate(sess bond.Session) error {
 			conds["id"] = b.ID
 		}
 
-		exists, err := repo.Books(sess).Find(conds).Exists()
+		exists, err := b.Store(sess).Find(conds).Exists()
 		if err != nil {
 			return err
 		}

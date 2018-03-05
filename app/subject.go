@@ -2,7 +2,6 @@ package app
 
 import (
 	"github.com/upper/bond-example-project/model"
-	"github.com/upper/bond-example-project/repo"
 
 	"errors"
 
@@ -15,7 +14,7 @@ type Subject struct {
 }
 
 func (s *Subject) Store(sess bond.Session) bond.Store {
-	return repo.Subjects(sess)
+	return Subjects(sess)
 }
 
 func NewSubject(subject *model.Subject) *Subject {
@@ -36,7 +35,7 @@ func (s *Subject) BeforeCreate(sess bond.Session) error {
 			conds["id"] = s.ID
 		}
 
-		exists, err := Subjects(sess).Find(conds).Exists()
+		exists, err := s.Store(sess).Find(conds).Exists()
 		if err != nil {
 			return err
 		}

@@ -35,7 +35,7 @@
 
 [[constraint]]
   name = "upper.io/bond"
-  version = "3.0.0"
+  revision = "985fe55006d63ff43155a51cf94f33a37a116fc7"
 
 [[constraint]]
   name = "upper.io/db.v3"

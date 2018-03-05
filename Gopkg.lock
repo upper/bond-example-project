@@ -40,8 +40,7 @@
 [[projects]]
   name = "upper.io/bond"
   packages = ["."]
-  revision = "356318cc1c7f44d4306363c08b3c89016b68a3fb"
-  version = "v3.0.0"
+  revision = "985fe55006d63ff43155a51cf94f33a37a116fc7"
 
 [[projects]]
   name = "upper.io/db.v3"
@@ -63,6 +62,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "36396bb0fe8a03687d990e781b4ae54c73e1e9a6c80517ab449c4c52801e8085"
+  inputs-digest = "5517589f0f2f702f24790df9b1915bbbe9b900a66a8267b03a64df5ae056c78d"
   solver-name = "gps-cdcl"
   solver-version = 1

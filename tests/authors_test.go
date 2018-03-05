@@ -31,7 +31,7 @@ func testAuthors(sess bond.Session, t *testing.T) {
 		err := sess.Save(author)
 		assert.NoError(t, err)
 	}
-	// Retrive author and fix their name.
+	// Retrieve author and fix their name.
 	{
 		var authors []*app.Author
 		err := app.Authors(sess).FindByLastName("Huxley").All(&authors)

@@ -2,7 +2,6 @@ package app
 
 import (
 	"github.com/upper/bond-example-project/model"
-	"github.com/upper/bond-example-project/repo"
 
 	"errors"
 
@@ -15,7 +14,7 @@ type Author struct {
 }
 
 func (a *Author) Store(sess bond.Session) bond.Store {
-	return repo.Authors(sess)
+	return Authors(sess)
 }
 
 func NewAuthor(a *model.Author) *Author {
@@ -34,12 +33,16 @@ func (a *Author) Validate() error {
 
 func (a *Author) BeforeCreate(sess bond.Session) error {
 	{
-		conds := db.Cond{"first_name": a.FirstName, "last_name": a.LastName}
+		conds := db.Cond{
+			"first_name": a.FirstName,
+			"last_name":  a.LastName,
+		}
+
 		if a.ID != 0 {
 			conds["id"] = a.ID
 		}
 
-		exists, err := Authors(sess).Find(conds).Exists()
+		exists, err := a.Store(sess).Find(conds).Exists()
 		if err != nil {
 			return err
 		}

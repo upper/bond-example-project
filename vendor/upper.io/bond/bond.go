@@ -10,12 +10,20 @@ var (
 	ErrZeroItemID        = errors.New("item id is empty")
 )
 
+type HasSave interface {
+	Save(sess Session) error
+}
+
 type Model interface {
-	HasCollectionName
+	HasStore
 }
 
 type HasCollectionName interface {
 	CollectionName() string
+}
+
+type HasStore interface {
+	Store(sess Session) Store
 }
 
 type HasValidate interface {
@@ -45,3 +53,5 @@ type HasBeforeDelete interface {
 type HasAfterDelete interface {
 	AfterDelete(Session) error
 }
+
+type StoreFunc func(sess Session) Store

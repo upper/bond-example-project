@@ -62,7 +62,7 @@ func listAuthors(w http.ResponseWriter, r *http.Request) {
 		var authors []*app.Author
 		var err error
 
-		page, err = ws.Paginate(r, app.Authors(sess).Find(), &authors)
+		page, err = ws.Paginate(r, repo.Authors(sess).Find(), &authors)
 		if err != nil {
 			return err
 		}
@@ -83,7 +83,7 @@ func authorCtx(next http.Handler) http.Handler {
 		authorID := chi.URLParam(r, "authorID")
 
 		var author app.Author
-		err := app.Authors(repo.Session).Find(db.Cond{"id": authorID}).One(&author)
+		err := repo.Authors(repo.Session).Find(db.Cond{"id": authorID}).One(&author)
 		if err != nil {
 			ws.Respond(w, 404, nil)
 			return
