@@ -25,7 +25,7 @@ func Subjects(sess bond.Session) bond.Store {
 func loadSettings() postgresql.ConnectionURL {
 	return postgresql.ConnectionURL{
 		Host:     os.Getenv("DB_HOST") + ":" + os.Getenv("DB_PORT"),
-		User:     os.Getenv("DB_USERNAME"),
+		User:     os.Getenv("DB_USER"),
 		Database: os.Getenv("DB_NAME"),
 		Password: os.Getenv("DB_PASSWORD"),
 	}
