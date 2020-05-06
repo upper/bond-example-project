@@ -1,24 +1,31 @@
-package app
+package repo
 
 import (
-	"github.com/upper/bond-example-project/model"
+	"github.com/upper/bond-example-project/internal/model"
 
 	"errors"
 
-	"upper.io/bond"
-	"upper.io/db.v3"
+	"github.com/upper/db"
+	"github.com/upper/db/bond"
 )
 
 type Book struct {
 	*model.Book `json:"book"`
 }
 
+var _ interface {
+	bond.Model
+	bond.HasBeforeCreate
+} = &Book{}
+
 func (b *Book) Store(sess bond.Session) bond.Store {
 	return Books(sess)
 }
 
 func NewBook(book *model.Book) *Book {
-	return &Book{book}
+	return &Book{
+		Book: book,
+	}
 }
 
 func (b *Book) Validate() error {
@@ -34,6 +41,10 @@ func (b *Book) Validate() error {
 	return nil
 }
 
+func (b *Book) BeforeSave(sess bond.Session) error {
+	return nil
+}
+
 func (b *Book) BeforeCreate(sess bond.Session) error {
 	{
 		conds := db.Cond{"title": b.Title, "author_id": b.AuthorID}
@@ -41,7 +52,7 @@ func (b *Book) BeforeCreate(sess bond.Session) error {
 			conds["id"] = b.ID
 		}
 
-		exists, err := b.Store(sess).Find(conds).Exists()
+		exists, err := Books(sess).Find(conds).Exists()
 		if err != nil {
 			return err
 		}
@@ -51,8 +62,3 @@ func (b *Book) BeforeCreate(sess bond.Session) error {
 	}
 	return nil
 }
-
-var _ interface {
-	bond.Model
-	bond.HasBeforeCreate
-} = &Book{}

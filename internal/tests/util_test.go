@@ -6,7 +6,7 @@ import (
 
 	"github.com/upper/bond-example-project/repo"
 
-	"upper.io/bond"
+	"github.com/upper/db/bond"
 )
 
 func cleanUp(sess bond.Session, t *testing.T) {

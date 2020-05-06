@@ -1,17 +1,22 @@
-package app
+package repo
 
 import (
-	"github.com/upper/bond-example-project/model"
+	"github.com/upper/bond-example-project/internal/model"
 
 	"errors"
 
-	"upper.io/bond"
-	"upper.io/db.v3"
+	"github.com/upper/db"
+	"github.com/upper/db/bond"
 )
 
 type Subject struct {
 	*model.Subject `json:"subject"`
 }
+
+var _ interface {
+	bond.Model
+	bond.HasBeforeCreate
+} = &Subject{}
 
 func (s *Subject) Store(sess bond.Session) bond.Store {
 	return Subjects(sess)
@@ -45,8 +50,3 @@ func (s *Subject) BeforeCreate(sess bond.Session) error {
 	}
 	return nil
 }
-
-var _ interface {
-	bond.Model
-	bond.HasBeforeCreate
-} = &Subject{}
