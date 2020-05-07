@@ -1,17 +1,17 @@
 DOCKER_CONTAINER := bond-db
 
 
-DB_HOST      ?= 127.0.0.1
-DB_NAME      ?= bond
-DB_PASSWORD  ?= postgres
-DB_PORT      ?= 5432
-DB_USER      ?= postgres
+DATABASE_HOST      ?= 127.0.0.1
+DATABASE_NAME      ?= bond
+DATABASE_PASSWORD  ?= postgres
+DATABASE_PORT      ?= 5432
+DATABASE_USER      ?= postgres
 
-export DB_HOST
-export DB_NAME
-export DB_PASSWORD
-export DB_PORT
-export DB_USER
+export DATABASE_HOST
+export DATABASE_NAME
+export DATABASE_PASSWORD
+export DATABASE_PORT
+export DATABASE_USER
 
 run:
 	cd service/web && go run *.go
@@ -24,14 +24,14 @@ docker-run:
 	docker run \
 		-d \
 		--name $(DOCKER_CONTAINER) \
-		-e POSTGRES_PASSWORD=$(DB_PASSWORD) \
-		-e POSTGRES_USER=$(DB_USER) \
-		-e POSTGRES_DB=$(DB_NAME) \
-		-p $(DB_HOST):$(DB_PORT):5432 \
+		-e POSTGRES_PASSWORD=$(DATABASE_PASSWORD) \
+		-e POSTGRES_USER=$(DATABASE_USER) \
+		-e POSTGRES_DB=$(DATABASE_NAME) \
+		-p $(DATABASE_HOST):$(DATABASE_PORT):5432 \
 		postgres && \
 	sleep 5
 
 db-load:
-	docker exec -i bond-db bash -c 'psql -Upostgres' < sql/0000-init.sql
+	docker exec -i $(DOCKER_CONTAINER) bash -c 'psql -U$(DATABASE_USER) $(DATABASE_NAME)' < sql/0000-init.sql
 
 db-up: docker-run db-load

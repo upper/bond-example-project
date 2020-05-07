@@ -29,11 +29,13 @@ func NewAuthor(author *model.Author) *Author {
 }
 
 func (a *Author) Validate() error {
-	if a.FirstName == "" {
-		return errors.New("Missing author's first name")
-	}
-	if a.LastName == "" {
-		return errors.New("Missing author's last name")
+	if a.ID == 0 {
+		if a.FirstName == "" {
+			return errors.New("Missing author's first name")
+		}
+		if a.LastName == "" {
+			return errors.New("Missing author's last name")
+		}
 	}
 	return nil
 }
