@@ -77,7 +77,7 @@ func updateBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	updatedBook, err := app.Books(r.Context()).Update(&book)
+	updatedBook, err := app.Books(r.Context()).Update(&book, &patch)
 	if err != nil {
 		ws.Respond(w, http.StatusInternalServerError, err)
 		return

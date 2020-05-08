@@ -7,9 +7,9 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"github.com/upper/bond-example-project/service/web/handlers/authors"
-	"github.com/upper/bond-example-project/service/web/handlers/books"
-	"github.com/upper/bond-example-project/service/web/handlers/subjects"
+	"github.com/upper/bond-example-project/service/handlers/authors"
+	"github.com/upper/bond-example-project/service/handlers/books"
+	"github.com/upper/bond-example-project/service/handlers/subjects"
 )
 
 const listenAddr = ":1999"

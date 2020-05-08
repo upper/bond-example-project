@@ -77,7 +77,7 @@ func updateSubject(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	updatedSubject, err := app.Subjects(r.Context()).Update(&subject)
+	updatedSubject, err := app.Subjects(r.Context()).Update(&subject, &patch)
 	if err != nil {
 		ws.Respond(w, http.StatusInternalServerError, err)
 		return

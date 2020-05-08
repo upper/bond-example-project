@@ -77,7 +77,7 @@ func updateAuthor(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	updatedAuthor, err := app.Authors(r.Context()).Update(&author)
+	updatedAuthor, err := app.Authors(r.Context()).Update(&author, &patch)
 	if err != nil {
 		ws.Respond(w, http.StatusInternalServerError, err)
 		return
