@@ -15,7 +15,7 @@ type Subject struct {
 
 var _ interface {
 	bond.Model
-	bond.HasBeforeCreate
+	bond.BeforeCreateHook
 } = &Subject{}
 
 func (s *Subject) Store(sess bond.Session) bond.Store {

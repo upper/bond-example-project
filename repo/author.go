@@ -15,7 +15,7 @@ type Author struct {
 
 var _ interface {
 	bond.Model
-	bond.HasBeforeCreate
+	bond.BeforeCreateHook
 } = &Author{}
 
 func (a *Author) Store(sess bond.Session) bond.Store {

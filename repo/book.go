@@ -15,7 +15,7 @@ type Book struct {
 
 var _ interface {
 	bond.Model
-	bond.HasBeforeCreate
+	bond.BeforeCreateHook
 } = &Book{}
 
 func (b *Book) Store(sess bond.Session) bond.Store {
